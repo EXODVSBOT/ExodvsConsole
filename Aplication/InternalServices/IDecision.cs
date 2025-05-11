@@ -10,6 +10,9 @@ namespace Aplication.InternalServices
 {
     public interface IDecision
     {
-        Task<DecisionEnum> Analise(decimal marketRsi, ConfigurationResult config);
+        Task<DecisionEnum> AnalyzeMarket(
+           decimal marketRsi,
+           ConfigurationResult config,
+           decimal bitcoinPrice);
     }
 }

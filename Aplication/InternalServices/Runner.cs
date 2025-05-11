@@ -63,7 +63,7 @@ namespace Aplication.InternalServices
                     _monitoring.UpdateData(operationResult);
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(10));
             }
         }
 
@@ -96,7 +96,7 @@ namespace Aplication.InternalServices
                 var candles = await _calculation.DefinirQuantidadeDeCandles(klineInterval, 14);
                 var prices = await _binanceInfo.GetHistoricalPrices("BTCUSDT", (Binance.Net.Enums.KlineInterval)klineInterval, 50);
                 var rsi = _calculation.GetRSI(prices, 14);
-                var decision = await _decision.Analise(rsi, configuration);
+                var decision = await _decision.AnalyzeMarket(rsi, configuration,btcPrice);
                 var executed = await _binanceOperation.Operate(decision, await _binanceInfo.GetBalance());
                 var usdtBalance = await _binanceInfo.GetBalance();
 
@@ -107,6 +107,7 @@ namespace Aplication.InternalServices
                     SellRsi = configuration.SellRsi,
                     Executed = executed,
                     MarketRsi = rsi,
+                    Decision = (int)decision,
                     StopLoss = configuration.StopLoss,
                     TakeProfit = configuration.TakeProfit,
                     OperationDate = DateTime.Now,

@@ -1,30 +1,92 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Domain.Class;
 using Domain.Enum;
 using Domain.Record;
+using TxtDatabase;
 
 namespace Aplication.InternalServices
 {
     public class Decision : IDecision
     {
-        public async Task<DecisionEnum> Analise(decimal marketRsi, ConfigurationResult config)
+        private readonly IOperation<OperationResult> _operation;
+
+        public Decision(IOperation<OperationResult> operation)
         {
+            _operation = operation ?? throw new ArgumentNullException(nameof(operation));
+        }
+
+        public async Task<DecisionEnum> AnalyzeMarket(
+            decimal marketRsi,
+            ConfigurationResult config,
+            decimal bitcoinPrice)
+        {
+            if (config == null) throw new ArgumentNullException(nameof(config));
+            if (bitcoinPrice <= 0) throw new ArgumentException("O preço do Bitcoin deve ser maior que zero");
+
+            var lastOperation = GetLastOperation();
             var decision = DecisionEnum.Keep;
-            
-            if(marketRsi > config.SellRsi)
+
+            if (ShouldTriggerStopLoss(lastOperation, bitcoinPrice, config.StopLoss))
             {
                 decision = DecisionEnum.Sell;
             }
-
-            if (marketRsi < config.BuyRsi)
+            else if (ShouldTakeProfit(lastOperation, bitcoinPrice, config.TakeProfit))
+            {
+                decision = DecisionEnum.Sell;
+            }
+            else if (ShouldSellBasedOnRsi(marketRsi, config.SellRsi, lastOperation, bitcoinPrice))
+            {
+                decision = DecisionEnum.Sell;
+            }
+            else if (ShouldBuyBasedOnRsi(marketRsi, config.BuyRsi))
             {
                 decision = DecisionEnum.Buy;
             }
 
             return decision;
+        }
+
+        private OperationResult GetLastOperation()
+        {
+            var lastOperation = _operation.ReadAll()?
+                .OrderByDescending(x => x.OperationDate)
+                .FirstOrDefault();
+
+            return lastOperation?.Decision == 2 ? lastOperation : null;
+        }
+
+        private bool ShouldTriggerStopLoss(OperationResult lastOperation, decimal currentPrice, int stopLoss)
+        {
+            if (lastOperation == null || lastOperation.BitcoinPrice == 0)
+                return false;
+
+            decimal percentageChange = (currentPrice - lastOperation.BitcoinPrice) / lastOperation.BitcoinPrice * 100;
+            return percentageChange <= -stopLoss;
+        }
+
+        private bool ShouldTakeProfit(OperationResult lastOperation, decimal currentPrice, int takeProfit)
+        {
+            if (lastOperation == null || lastOperation.BitcoinPrice == 0)
+                return false;
+
+            decimal percentageChange = (currentPrice - lastOperation.BitcoinPrice) / lastOperation.BitcoinPrice * 100;
+            return percentageChange >= takeProfit;
+        }
+
+        private bool ShouldSellBasedOnRsi(decimal marketRsi, decimal sellRsi, OperationResult lastOperation, decimal currentPrice)
+        {
+            if (lastOperation == null || lastOperation.BitcoinPrice == 0)
+                return false;
+
+            bool isProfitable = currentPrice > lastOperation.BitcoinPrice * 1.005m; 
+            return marketRsi > sellRsi && isProfitable;
+        }
+
+        private bool ShouldBuyBasedOnRsi(decimal marketRsi, decimal buyRsi)
+        {
+            return marketRsi < buyRsi;
         }
     }
 }

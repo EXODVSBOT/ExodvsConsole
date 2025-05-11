@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Class;
+using Domain.Enum;
 using TxtDatabase;
 
 namespace Animation.Monitoring
@@ -302,6 +303,7 @@ namespace Animation.Monitoring
                               "Preço BTC".PadRight(15) + " | " +
                               "RSI".PadRight(10) + " | " +
                               "Executada".PadRight(10) + " | " +
+                              "Operação".PadRight(10) + " | " +
                               "Saldo USDT".PadRight(15));
             Console.WriteLine(new string('─', Console.WindowWidth));
 
@@ -314,6 +316,7 @@ namespace Animation.Monitoring
                     op.BitcoinPrice.ToString("C").PadRight(15) + " | " +
                     op.MarketRsi.ToString("F2").PadRight(10) + " | " +
                     (op.Executed ? "Sim" : "Não").PadRight(10) + " | " +
+                    (((DecisionEnum)op.Decision).ToString()).PadRight(10) + " | " +
                     op.UsdtBalance.ToString("F2").PadRight(15));
             }
 

@@ -25,7 +25,7 @@ namespace Aplication.ExternalServices
 
         public async Task<bool> Operate(DecisionEnum decision, decimal ballance)
         {
-            if(ballance < 1 || decision == DecisionEnum.Keep)
+            if(ballance < 0.3m || decision == DecisionEnum.Keep)
             {
                 return false;
             }
