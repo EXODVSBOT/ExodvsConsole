@@ -28,6 +28,7 @@ namespace MeuConsoleApp
                     services.AddScoped<IOperation<OperationResult>, Operation<OperationResult>>(); 
                     services.AddScoped<ITelegramMessage, TelegramMessage>();
                     services.AddScoped<IMonitoring, Monitoring>();
+                    services.AddScoped<IVerifyConditionsToRun, VerifyConditionsToRun>();
                     services.AddScoped<IRunner, Runner>();
                 })
                 .Build();

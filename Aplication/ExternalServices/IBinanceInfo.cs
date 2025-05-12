@@ -12,5 +12,6 @@ namespace Aplication.ExternalServices
         Task<List<decimal>> GetHistoricalPrices(string symbol, KlineInterval interval, int limit);
         Task<decimal> GetBalance();
         Task<decimal> GetBTCPrice();
+        Task<bool> VerifyBinanceKeys();
     }
 }

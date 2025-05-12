@@ -25,6 +25,20 @@ namespace Aplication.ExternalServices
             });
         }
 
+        public async Task<bool> VerifyBinanceKeys()
+        {
+            try
+            {
+                var result = await _client.SpotApi.Account.GetAccountInfoAsync();
+
+                return result.Success;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public async Task<List<decimal>> GetHistoricalPrices(string symbol, KlineInterval interval, int limit)
         {
             try
