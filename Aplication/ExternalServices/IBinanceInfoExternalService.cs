@@ -7,7 +7,7 @@ using Binance.Net.Enums;
 
 namespace Aplication.ExternalServices
 {
-    public interface IBinanceInfo
+    public interface IBinanceInfoExternalService
     {
         Task<List<decimal>> GetHistoricalPrices(string symbol, KlineInterval interval, int limit);
         Task<decimal> GetBalance();

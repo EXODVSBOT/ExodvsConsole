@@ -20,22 +20,22 @@ namespace MeuConsoleApp
                 .ConfigureServices((context, services) =>
                 {
                     services.AddScoped<IStarterAnimation, StarterAnimation>();
-                    services.AddScoped<IConfiguration, Configuration>();
-                    services.AddScoped<IIntroducao, Introducao>();
-                    services.AddScoped<ICalculation, Calculation>();
-                    services.AddScoped<IDecision, Decision>();
-                    services.AddScoped<IOperationResultService, OperationResultService>();
-                    services.AddScoped<IOperation<OperationResult>, Operation<OperationResult>>(); 
-                    services.AddScoped<ITelegramMessage, TelegramMessage>();
-                    services.AddScoped<IMonitoring, Monitoring>();
-                    services.AddScoped<IVerifyConditionsToRun, VerifyConditionsToRun>();
-                    services.AddScoped<IRunner, Runner>();
+                    services.AddScoped<IConfigurationAnimation, ConfigurationAnimation>();
+                    services.AddScoped<IIntroducaoAnimation, IntroducaoAnimation>();
+                    services.AddScoped<ICalculationInternalService, CalculationInternalService>();
+                    services.AddScoped<IDecisionInternalService, DecisionInternalService>();
+                    services.AddScoped<IOperationResultInternalService, OperationResultServiceInternalService>();
+                    services.AddScoped<IOperationRepository<OperationResultDomain>, OperationRepository<OperationResultDomain>>(); 
+                    services.AddScoped<ITelegramMessageExternalService, TelegramMessageExternalService>();
+                    services.AddScoped<IMonitoringAnimation, MonitoringAnimation>();
+                    services.AddScoped<IVerifyConditionsToRunInternalService, VerifyConditionsToRunInternalService>();
+                    services.AddScoped<IRunnerInternalService, RunnerInternalService>();
                 })
                 .Build();
 
             using (var scope = host.Services.CreateScope())
             {
-                var runner = scope.ServiceProvider.GetRequiredService<IRunner>();
+                var runner = scope.ServiceProvider.GetRequiredService<IRunnerInternalService>();
                 await runner.Run();
             }
         }

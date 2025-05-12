@@ -9,7 +9,7 @@ using TxtDatabase;
 
 namespace Animation.Monitoring
 {
-    public class Monitoring : IMonitoring
+    public class MonitoringAnimation : IMonitoringAnimation
     {
         private readonly ConsoleColor[] _colorScheme =
         {
@@ -24,12 +24,12 @@ namespace Animation.Monitoring
         public bool IsPaused => _isPaused;
 
         private bool _isRunning = true;
-        private OperationResult _lastResult;
-        private readonly Queue<OperationResult> _resultsHistory = new Queue<OperationResult>();
+        private OperationResultDomain _lastResult;
+        private readonly Queue<OperationResultDomain> _resultsHistory = new Queue<OperationResultDomain>();
         private const int MaxHistorySize = 1000;
-        private readonly IOperation<OperationResult> _operation;
+        private readonly IOperationRepository<OperationResultDomain> _operation;
 
-        public Monitoring(IOperation<OperationResult> operation)
+        public MonitoringAnimation(IOperationRepository<OperationResultDomain> operation)
         {
             _operation = operation;
         }
@@ -42,7 +42,7 @@ namespace Animation.Monitoring
             DrawStaticLayout();
         }
 
-        public void UpdateData(OperationResult result)
+        public void UpdateData(OperationResultDomain result)
         {
             if (_isPaused) return;
 

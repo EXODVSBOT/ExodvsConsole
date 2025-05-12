@@ -10,12 +10,12 @@ using Domain.Enum;
 
 namespace Aplication.ExternalServices
 {
-    public class BinanceOperation : IBinanceOperation
+    public class BinanceOperationExternalService : IBinanceOperationExternalService
     {
         private readonly BinanceRestClient _client;
         private const decimal FeeRate = 0.001m;
 
-        public BinanceOperation(string apiKey, string apiSecret)
+        public BinanceOperationExternalService(string apiKey, string apiSecret)
         {
             _client = new BinanceRestClient(options =>
             {

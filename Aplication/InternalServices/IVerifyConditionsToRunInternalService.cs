@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Enum;
 using Domain.Record;
 
 namespace Aplication.InternalServices
 {
-    public interface IDecision
+    public interface IVerifyConditionsToRunInternalService
     {
-        Task<DecisionEnum> AnalyzeMarket(
-           decimal marketRsi,
-           ConfigurationResult config,
-           decimal bitcoinPrice);
+        Task<ConditionsToRunRecord> StartVerification(ConfigurationResultRecord configuration);
     }
 }

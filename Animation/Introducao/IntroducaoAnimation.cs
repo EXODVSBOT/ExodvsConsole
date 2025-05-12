@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Animation.Introducao
 {
-    public class Introducao : IIntroducao
+    public class IntroducaoAnimation : IIntroducaoAnimation
     {
         public void ExibirTutorial()
         {

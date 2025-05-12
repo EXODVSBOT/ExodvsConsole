@@ -12,30 +12,30 @@ using System.Security.Cryptography;
 
 namespace Aplication.InternalServices
 {
-    public class Runner : IRunner
+    public class RunnerInternalService : IRunnerInternalService
     {
         private readonly IStarterAnimation _starterAnimation;
-        private readonly Animation.Configuration.IConfiguration _configuration;
-        private readonly IIntroducao _introducao;
-        private readonly ICalculation _calculation;
-        private readonly IDecision _decision;
-        private readonly IOperationResultService _operationResultService;
-        private readonly ITelegramMessage _telegramMessage;
-        private readonly IMonitoring _monitoring;
-        private readonly IVerifyConditionsToRun _verifyConditionsToRun;
+        private readonly Animation.Configuration.IConfigurationAnimation _configuration;
+        private readonly IIntroducaoAnimation _introducao;
+        private readonly ICalculationInternalService _calculation;
+        private readonly IDecisionInternalService _decision;
+        private readonly IOperationResultInternalService _operationResultService;
+        private readonly ITelegramMessageExternalService _telegramMessage;
+        private readonly IMonitoringAnimation _monitoring;
+        private readonly IVerifyConditionsToRunInternalService _verifyConditionsToRun;
 
-        private BinanceInfo _binanceInfo;
-        private BinanceOperation _binanceOperation;
+        private BinanceInfoExternalService _binanceInfo;
+        private BinanceOperationExternalService _binanceOperation;
 
-        public Runner(IStarterAnimation starterAnimation,
-            Animation.Configuration.IConfiguration configuration,
-            IIntroducao introducao,
-            ICalculation calculation,
-            IDecision decision,
-            IOperationResultService operationResultService,
-            ITelegramMessage telegramMessage,
-            IMonitoring monitoring,
-            IVerifyConditionsToRun verifyConditionsToRun)
+        public RunnerInternalService(IStarterAnimation starterAnimation,
+            Animation.Configuration.IConfigurationAnimation configuration,
+            IIntroducaoAnimation introducao,
+            ICalculationInternalService calculation,
+            IDecisionInternalService decision,
+            IOperationResultInternalService operationResultService,
+            ITelegramMessageExternalService telegramMessage,
+            IMonitoringAnimation monitoring,
+            IVerifyConditionsToRunInternalService verifyConditionsToRun)
         {
             _starterAnimation = starterAnimation;
             _configuration = configuration;
@@ -54,8 +54,8 @@ namespace Aplication.InternalServices
             _introducao.ExibirTutorial();
 
             var config = _configuration.GetConfiguration();
-            _binanceInfo = new BinanceInfo(config.BinanceKey, config.BinanceSecret);
-            _binanceOperation = new BinanceOperation(config.BinanceKey, config.BinanceSecret);
+            _binanceInfo = new BinanceInfoExternalService(config.BinanceKey, config.BinanceSecret);
+            _binanceOperation = new BinanceOperationExternalService(config.BinanceKey, config.BinanceSecret);
 
             _operationResultService.CreateFile();
             _monitoring.Initialize();
@@ -73,7 +73,7 @@ namespace Aplication.InternalServices
             }
         }
 
-        private async Task<OperationResult> ExecuteTradingCycle(ConfigurationResult configuration)
+        private async Task<OperationResultDomain> ExecuteTradingCycle(ConfigurationResultRecord configuration)
         {
             try
             {
@@ -97,14 +97,14 @@ namespace Aplication.InternalServices
                 Console.ResetColor();
 
                 // Retorna um resultado vazio em caso de erro
-                return new OperationResult
+                return new OperationResultDomain
                 {
                     OperationDate = DateTime.Now
                 };
             }
         }
 
-        private KlineIntervalEnum GetKlineInterval(ConfigurationResult config)
+        private KlineIntervalEnum GetKlineInterval(ConfigurationResultRecord config)
             => config.klineInterval switch
             {
                 1 => KlineIntervalEnum.OneSecond,
@@ -126,8 +126,8 @@ namespace Aplication.InternalServices
                 _ => KlineIntervalEnum.FourHour 
             };
 
-        private OperationResult GetOperationResult(decimal btcPrice, ConfigurationResult configuration, bool executed, decimal rsi, DecisionEnum decision, decimal usdtBalance) 
-            => new OperationResult()
+        private OperationResultDomain GetOperationResult(decimal btcPrice, ConfigurationResultRecord configuration, bool executed, decimal rsi, DecisionEnum decision, decimal usdtBalance) 
+            => new OperationResultDomain()
             {
                 BitcoinPrice = btcPrice,
                 BuyRsi = configuration.BuyRsi,
@@ -142,7 +142,7 @@ namespace Aplication.InternalServices
                 KlineInterval = configuration.klineInterval
             };
 
-        private async Task SaveData(bool executed, OperationResult operationResult, ConfigurationResult configuration, DecisionEnum decision, decimal usdtBalance)
+        private async Task SaveData(bool executed, OperationResultDomain operationResult, ConfigurationResultRecord configuration, DecisionEnum decision, decimal usdtBalance)
         {
             if (executed)
             {
@@ -151,7 +151,7 @@ namespace Aplication.InternalServices
             }
         }
 
-        private async Task Notify(ConfigurationResult configuration, DecisionEnum decision, decimal usdtBalance)
+        private async Task Notify(ConfigurationResultRecord configuration, DecisionEnum decision, decimal usdtBalance)
         {
             await _telegramMessage.SendMessage(
                     configuration.TelegramKey,

@@ -4,7 +4,7 @@ using Domain.Record;
 
 namespace Animation.Configuration
 {
-    public class Configuration : IConfiguration
+    public class ConfigurationAnimation : IConfigurationAnimation
     {
         public string BinanceKey { get; private set; } = string.Empty;
         public string BinanceSecret { get; private set; } = string.Empty;
@@ -16,7 +16,7 @@ namespace Animation.Configuration
         public int TakeProfit { get; private set; } = 10;
         public int KlineInterval { get; private set; } = 9; // Padrão: 4 horas
 
-        public ConfigurationResult GetConfiguration()
+        public ConfigurationResultRecord GetConfiguration()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
 
@@ -40,7 +40,7 @@ namespace Animation.Configuration
             Console.ResetColor();
             Console.Clear();
 
-            return new ConfigurationResult(
+            return new ConfigurationResultRecord(
                 BinanceKey,
                 BinanceSecret,
                 TelegramKey,

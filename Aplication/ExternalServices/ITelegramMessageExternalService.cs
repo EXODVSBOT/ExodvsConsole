@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Aplication.ExternalServices
 {
-    public interface ITelegramMessage
+    public interface ITelegramMessageExternalService
     {
         Task SendMessage(string token, string chatId, string message);
     }

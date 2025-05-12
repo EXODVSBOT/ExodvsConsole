@@ -2,10 +2,10 @@
 
 namespace Animation.Monitoring
 {
-    public interface IMonitoring
+    public interface IMonitoringAnimation
     {
         bool IsPaused { get; } 
         void Initialize();
-        void UpdateData(OperationResult result);
+        void UpdateData(OperationResultDomain result);
     }
 }

@@ -7,7 +7,7 @@ using Domain.Enum;
 
 namespace Aplication.InternalServices
 {
-    public interface ICalculation
+    public interface ICalculationInternalService
     {
         decimal GetRSI(List<decimal> precos, int periodo = 14);
         Task<int> DefinirQuantidadeDeCandles(KlineIntervalEnum intervalo, int periodo = 14);

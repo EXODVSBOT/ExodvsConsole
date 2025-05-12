@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TxtDatabase
 {
-    public interface IOperation<T> where T : class
+    public interface IOperationRepository<T> where T : class
     {
         void EnsureFileExists();
         void Create(T entity);

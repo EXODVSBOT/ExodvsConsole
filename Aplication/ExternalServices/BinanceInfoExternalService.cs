@@ -9,13 +9,13 @@ using CryptoExchange.Net.Authentication;
 
 namespace Aplication.ExternalServices
 {
-    public class BinanceInfo : IBinanceInfo
+    public class BinanceInfoExternalService : IBinanceInfoExternalService
     {
         private readonly string _apiKey;
         private readonly string _apiSecret;
         private readonly BinanceRestClient _client;
 
-        public BinanceInfo(string apiKey, string apiSecret)
+        public BinanceInfoExternalService(string apiKey, string apiSecret)
         {
             _apiKey = apiKey;
             _apiSecret = apiSecret;

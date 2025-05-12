@@ -8,7 +8,7 @@ using Domain.Enum;
 
 namespace Domain.Class
 {
-    public class OperationResult
+    public class OperationResultDomain
     {
         public decimal BitcoinPrice { get; set; }
         public bool Executed { get; set; }

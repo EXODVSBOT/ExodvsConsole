@@ -8,18 +8,18 @@ using TxtDatabase;
 
 namespace Aplication.InternalServices
 {
-    public class Decision : IDecision
+    public class DecisionInternalService : IDecisionInternalService
     {
-        private readonly IOperation<OperationResult> _operation;
+        private readonly IOperationRepository<OperationResultDomain> _operation;
 
-        public Decision(IOperation<OperationResult> operation)
+        public DecisionInternalService(IOperationRepository<OperationResultDomain> operation)
         {
             _operation = operation ?? throw new ArgumentNullException(nameof(operation));
         }
 
         public async Task<DecisionEnum> AnalyzeMarket(
             decimal marketRsi,
-            ConfigurationResult config,
+            ConfigurationResultRecord config,
             decimal bitcoinPrice)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
@@ -48,7 +48,7 @@ namespace Aplication.InternalServices
             return decision;
         }
 
-        private OperationResult GetLastOperation()
+        private OperationResultDomain GetLastOperation()
         {
             var lastOperation = _operation.ReadAll()?
                 .OrderByDescending(x => x.OperationDate)
@@ -57,7 +57,7 @@ namespace Aplication.InternalServices
             return lastOperation?.Decision == 2 ? lastOperation : null;
         }
 
-        private bool ShouldTriggerStopLoss(OperationResult lastOperation, decimal currentPrice, int stopLoss)
+        private bool ShouldTriggerStopLoss(OperationResultDomain lastOperation, decimal currentPrice, int stopLoss)
         {
             if (lastOperation == null || lastOperation.BitcoinPrice == 0)
                 return false;
@@ -66,7 +66,7 @@ namespace Aplication.InternalServices
             return percentageChange <= -stopLoss;
         }
 
-        private bool ShouldTakeProfit(OperationResult lastOperation, decimal currentPrice, int takeProfit)
+        private bool ShouldTakeProfit(OperationResultDomain lastOperation, decimal currentPrice, int takeProfit)
         {
             if (lastOperation == null || lastOperation.BitcoinPrice == 0)
                 return false;
@@ -75,7 +75,7 @@ namespace Aplication.InternalServices
             return percentageChange >= takeProfit;
         }
 
-        private bool ShouldSellBasedOnRsi(decimal marketRsi, decimal sellRsi, OperationResult lastOperation, decimal currentPrice)
+        private bool ShouldSellBasedOnRsi(decimal marketRsi, decimal sellRsi, OperationResultDomain lastOperation, decimal currentPrice)
         {
             if (lastOperation == null || lastOperation.BitcoinPrice == 0)
                 return false;

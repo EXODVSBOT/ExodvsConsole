@@ -7,7 +7,7 @@ using Domain.Enum;
 
 namespace Aplication.ExternalServices
 {
-    public interface IBinanceOperation
+    public interface IBinanceOperationExternalService
     {
         Task<bool> Buy(decimal usdtBalance);
         Task<bool> Sell();

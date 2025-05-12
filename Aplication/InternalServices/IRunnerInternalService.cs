@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Record;
 
 namespace Aplication.InternalServices
 {
-    public interface IVerifyConditionsToRun
+    public interface IRunnerInternalService
     {
-        Task<ConditionsToRun> StartVerification(ConfigurationResult configuration);
+        Task Run();
     }
 }

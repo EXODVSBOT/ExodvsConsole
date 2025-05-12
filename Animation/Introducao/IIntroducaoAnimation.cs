@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aplication.InternalServices
+namespace Animation.Introducao
 {
-    public interface IRunner
+    public interface IIntroducaoAnimation
     {
-        Task Run();
+        void ExibirTutorial();
     }
 }

@@ -7,8 +7,8 @@ using Domain.Record;
 
 namespace Animation.Configuration
 {
-    public interface IConfiguration
+    public interface IConfigurationAnimation
     {
-        ConfigurationResult GetConfiguration();
+        ConfigurationResultRecord GetConfiguration();
     }
 }

@@ -7,7 +7,7 @@ using Telegram.Bot;
 
 namespace Aplication.ExternalServices
 {
-    public class TelegramMessage : ITelegramMessage
+    public class TelegramMessageExternalService : ITelegramMessageExternalService
     {
         public async Task SendMessage(string token, string chatId, string message)
         {

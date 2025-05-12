@@ -9,11 +9,11 @@ using TxtDatabase;
 
 namespace Aplication.InternalServices
 {
-    public class OperationResultService : IOperationResultService
+    public class OperationResultServiceInternalService : IOperationResultInternalService
     {
-        private readonly IOperation<OperationResult> _operation;
+        private readonly IOperationRepository<OperationResultDomain> _operation;
 
-        public OperationResultService(IOperation<OperationResult> operation)
+        public OperationResultServiceInternalService(IOperationRepository<OperationResultDomain> operation)
         {
             _operation = operation;
         }
@@ -23,13 +23,13 @@ namespace Aplication.InternalServices
             _operation.EnsureFileExists();
         }
 
-        public async Task<OperationResult> Save(OperationResult operation)
+        public async Task<OperationResultDomain> Save(OperationResultDomain operation)
         {
             _operation.Create(operation);
             return operation;
         }
 
-        public async Task<OperationResult> Get(OperationResult operation, int? take)
+        public async Task<OperationResultDomain> Get(OperationResultDomain operation, int? take)
         {
             var result = _operation.ReadAll()
                 .OrderByDescending(x => x.OperationDate)

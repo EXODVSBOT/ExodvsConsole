@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Record
 {
-    public record struct ConditionsToRun(
+    public record struct ConditionsToRunRecord(
         bool isAbleToStart,
         List<string> errors
         );

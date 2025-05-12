@@ -6,12 +6,12 @@ using System.Text.Json;
 
 namespace TxtDatabase
 {
-    public class Operation<T> : IOperation<T> where T : class
+    public class OperationRepository<T> : IOperationRepository<T> where T : class
     {
         private readonly string _filePath;
         private readonly JsonSerializerOptions _jsonOptions;
 
-        public Operation()
+        public OperationRepository()
         {
             // Configuração do caminho do arquivo
             string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;

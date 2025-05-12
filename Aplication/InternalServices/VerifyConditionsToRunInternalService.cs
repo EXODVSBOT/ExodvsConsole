@@ -8,16 +8,11 @@ using Domain.Record;
 
 namespace Aplication.InternalServices
 {
-    public class VerifyConditionsToRun : IVerifyConditionsToRun
+    public class VerifyConditionsToRunInternalService : IVerifyConditionsToRunInternalService
     {
-        private ConditionsToRun _conditions;
-        private readonly IBinanceInfo _binanceInfo;
-
-        public VerifyConditionsToRun(IBinanceInfo binanceInfo)
-        {
-            _binanceInfo = binanceInfo;
-        }
-        public async Task<ConditionsToRun> StartVerification(ConfigurationResult configuration)
+        private ConditionsToRunRecord _conditions;
+        
+        public async Task<ConditionsToRunRecord> StartVerification(ConfigurationResultRecord configuration)
         {
             _conditions.isAbleToStart = true;
             _conditions.errors = new List<string>();
@@ -41,7 +36,7 @@ namespace Aplication.InternalServices
             }
         }
 
-        public async Task<ConditionsToRun> VerifyInternetConnection()
+        public async Task<ConditionsToRunRecord> VerifyInternetConnection()
         {
             try
             {
@@ -71,9 +66,11 @@ namespace Aplication.InternalServices
             return _conditions;
         }
 
-        public async Task<ConditionsToRun> VerifyBinanceKeys(ConfigurationResult configuration)
+        public async Task<ConditionsToRunRecord> VerifyBinanceKeys(ConfigurationResultRecord configuration)
         {
-           var isValid = await _binanceInfo.VerifyBinanceKeys();
+           var binanceInfo = new BinanceInfoExternalService(configuration.BinanceKey, configuration.BinanceSecret);
+
+           var isValid = await binanceInfo.VerifyBinanceKeys();
             if (isValid) 
             { 
                 _conditions.isAbleToStart = isValid;

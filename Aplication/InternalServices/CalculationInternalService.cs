@@ -7,7 +7,7 @@ using Domain.Enum;
 
 namespace Aplication.InternalServices
 {
-    public class Calculation : ICalculation
+    public class CalculationInternalService : ICalculationInternalService
     {
         public decimal GetRSI(List<decimal> precos, int periodo = 14)
         {

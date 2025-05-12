@@ -7,11 +7,11 @@ using Domain.Class;
 
 namespace Aplication.InternalServices
 {
-    public interface IOperationResultService
+    public interface IOperationResultInternalService
     {
         void CreateFile();
-        Task<OperationResult> Save(OperationResult operation);
-        Task<OperationResult> Get(OperationResult operation, int? take);
+        Task<OperationResultDomain> Save(OperationResultDomain operation);
+        Task<OperationResultDomain> Get(OperationResultDomain operation, int? take);
 
     }
 }
