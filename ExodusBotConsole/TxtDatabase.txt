@@ -1,2 +1,0 @@
-{"BitcoinPrice":104936.49000000,"Executed":true,"UsdtBalance":399.30842905,"OperationDate":"2025-05-10T21:04:30.5712744-03:00","Decision":3,"MarketRsi":72.880393488418626472633051386,"KlineInterval":5,"BuyRsi":30,"SellRsi":50,"TakeProfit":1,"StopLoss":1}
-{"BitcoinPrice":104873.33000000,"Executed":true,"UsdtBalance":0.96944277,"OperationDate":"2025-05-10T21:03:06.1659125-03:00","Decision":2,"MarketRsi":72.239727855757423545459136842,"KlineInterval":5,"BuyRsi":80,"SellRsi":80,"TakeProfit":1,"StopLoss":1}

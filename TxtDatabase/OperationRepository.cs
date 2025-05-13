@@ -8,81 +8,138 @@ namespace TxtDatabase
 {
     public class OperationRepository<T> : IOperationRepository<T> where T : class
     {
-        private readonly string _filePath;
+        private const string FilePath = @"C:\Exodvs\TxtDatabase.txt";
         private readonly JsonSerializerOptions _jsonOptions;
 
         public OperationRepository()
         {
-            // Configuração do caminho do arquivo
-            string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
-            _filePath = Path.Combine(projectDirectory, "TxtDatabase.txt");
-
-            // Configurações de serialização JSON
             _jsonOptions = new JsonSerializerOptions
             {
                 WriteIndented = false,
                 PropertyNameCaseInsensitive = true
             };
 
-            // Garante que o arquivo existe
             EnsureFileExists();
         }
 
         public void EnsureFileExists()
         {
-            if (!File.Exists(_filePath))
+            try
             {
-                using (File.Create(_filePath)) { }
+                var directory = Path.GetDirectoryName(FilePath);
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                if (!File.Exists(FilePath))
+                {
+                    using (File.Create(FilePath)) { }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to initialize database file: {ex.Message}", ex);
             }
         }
 
         public void Create(T entity)
         {
-            var json = JsonSerializer.Serialize(entity, _jsonOptions);
-            var existingContent = File.ReadAllLines(_filePath).ToList();
-            existingContent.Insert(0, json);
-            File.WriteAllLines(_filePath, existingContent);
+            try
+            {
+                var json = JsonSerializer.Serialize(entity, _jsonOptions);
+                var existingContent = File.ReadAllLines(FilePath).ToList();
+                existingContent.Insert(0, json);
+                File.WriteAllLines(FilePath, existingContent);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to create entity: {ex.Message}", ex);
+            }
         }
 
         public IEnumerable<T> ReadAll()
         {
-            var lines = File.ReadAllLines(_filePath);
-            return lines.Select(line => JsonSerializer.Deserialize<T>(line, _jsonOptions));
+            try
+            {
+                var lines = File.ReadAllLines(FilePath);
+                return lines.Where(line => !string.IsNullOrWhiteSpace(line))
+                           .Select(line => JsonSerializer.Deserialize<T>(line, _jsonOptions));
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to read entities: {ex.Message}", ex);
+            }
         }
 
         public T ReadById(Func<T, bool> predicate)
         {
-            return ReadAll().FirstOrDefault(predicate);
+            try
+            {
+                return ReadAll().FirstOrDefault(predicate);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to read entity by ID: {ex.Message}", ex);
+            }
         }
 
         public void Update(Func<T, bool> predicate, T newEntity)
         {
-            var entities = ReadAll().ToList();
-            var index = entities.FindIndex(new Predicate<T>(predicate));
-
-            if (index != -1)
+            try
             {
-                entities[index] = newEntity;
-                SaveAllEntities(entities);
+                var entities = ReadAll().ToList();
+                var index = entities.FindIndex(new Predicate<T>(predicate));
+
+                if (index != -1)
+                {
+                    entities[index] = newEntity;
+                    SaveAllEntities(entities);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to update entity: {ex.Message}", ex);
             }
         }
 
         public void Delete(Func<T, bool> predicate)
         {
-            var entities = ReadAll().ToList();
-            entities.RemoveAll(new Predicate<T>(predicate));
-            SaveAllEntities(entities);
+            try
+            {
+                var entities = ReadAll().ToList();
+                entities.RemoveAll(new Predicate<T>(predicate));
+                SaveAllEntities(entities);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to delete entity: {ex.Message}", ex);
+            }
         }
 
         public void ClearAll()
         {
-            File.WriteAllText(_filePath, string.Empty);
+            try
+            {
+                File.WriteAllText(FilePath, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to clear database: {ex.Message}", ex);
+            }
         }
 
         private void SaveAllEntities(IEnumerable<T> entities)
         {
-            var jsonLines = entities.Select(entity => JsonSerializer.Serialize(entity, _jsonOptions));
-            File.WriteAllLines(_filePath, jsonLines);
+            try
+            {
+                var jsonLines = entities.Select(entity => JsonSerializer.Serialize(entity, _jsonOptions));
+                File.WriteAllLines(FilePath, jsonLines);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to save entities: {ex.Message}", ex);
+            }
         }
     }
 }

@@ -75,7 +75,7 @@ namespace Aplication.InternalServices
             { 
                 _conditions.isAbleToStart = isValid;
             }
-            if (!isValid) 
+            if (!isValid && _conditions.isAbleToStart) 
             {
                 _conditions.isAbleToStart = isValid;
                 _conditions.errors.Add("Chaves Binance incorretas, favor verificar.");
