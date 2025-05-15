@@ -59,17 +59,21 @@ namespace Aplication.InternalServices
 
             _operationResultService.CreateFile();
             _monitoring.Initialize();
-            var isAbleToStart = await _verifyConditionsToRun.StartVerification(config);
 
-            while (true && isAbleToStart.isAbleToStart)
+            while (true)
             {
-                if (!_monitoring.IsPaused)
+                var isAbleToStart = await _verifyConditionsToRun.StartVerification(config);
+
+                if (!isAbleToStart.isAbleToStart)
+                    return;
+
+                if (!_monitoring.IsPaused && isAbleToStart.isAbleToStart)
                 {
                     var operationResult = await ExecuteTradingCycle(config);
                     _monitoring.UpdateData(operationResult);
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(1));
             }
         }
 

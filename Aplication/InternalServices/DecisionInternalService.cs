@@ -80,7 +80,7 @@ namespace Aplication.InternalServices
             if (lastOperation == null || lastOperation.BitcoinPrice == 0)
                 return false;
 
-            bool isProfitable = currentPrice > lastOperation.BitcoinPrice * 1.005m; 
+            bool isProfitable = currentPrice > lastOperation.BitcoinPrice * 1.01m; 
             return marketRsi > sellRsi && isProfitable;
         }
 

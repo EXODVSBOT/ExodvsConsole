@@ -25,8 +25,8 @@ namespace Animation.Monitoring
 
         private bool _isRunning = true;
         private OperationResultDomain _lastResult;
-        private readonly Queue<OperationResultDomain> _resultsHistory = new Queue<OperationResultDomain>();
-        private const int MaxHistorySize = 1000;
+        private readonly List<OperationResultDomain> _resultsHistory = new List<OperationResultDomain>();
+        private int MaxHistorySize = 100000;
         private readonly IOperationRepository<OperationResultDomain> _operation;
 
         public MonitoringAnimation(IOperationRepository<OperationResultDomain> operation)
@@ -49,10 +49,11 @@ namespace Animation.Monitoring
             _lastResult = result;
 
             // Adiciona ao histórico e mantém apenas os últimos 1000 registros
-            _resultsHistory.Enqueue(result);
+            _resultsHistory.Add(result);
             if (_resultsHistory.Count > MaxHistorySize)
             {
-                _resultsHistory.Dequeue();
+                MaxHistorySize = 0;
+                _resultsHistory.Clear();
             }
 
             UpdateDynamicContent();
