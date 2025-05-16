@@ -64,9 +64,6 @@ namespace Aplication.InternalServices
             {
                 var isAbleToStart = await _verifyConditionsToRun.StartVerification(config);
 
-                if (!isAbleToStart.isAbleToStart)
-                    return;
-
                 if (!_monitoring.IsPaused && isAbleToStart.isAbleToStart)
                 {
                     var operationResult = await ExecuteTradingCycle(config);
