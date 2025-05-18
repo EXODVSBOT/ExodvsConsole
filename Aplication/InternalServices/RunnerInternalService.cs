@@ -70,8 +70,23 @@ namespace Aplication.InternalServices
                     _monitoring.UpdateData(operationResult);
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(GetSecondsFromRunInterval(config.RunInterval)));
             }
+        }
+
+        private double GetSecondsFromRunInterval(int runInterval)
+        {
+            return runInterval switch
+            {
+                1 => 1,       // 1 segundo
+                2 => 5,       // 5 segundos
+                3 => 10,       // 10 segundos
+                4 => 30,      // 30 segundos
+                5 => 60,       // 1 minuto (60 segundos)
+                6 => 600,      // 10 minutos (600 segundos)
+                7 => 3600,    // 1 hora (3600 segundos)
+                _ => 1        // padrão: 1 segundo se a opção for inválida
+            };
         }
 
         private async Task<OperationResultDomain> ExecuteTradingCycle(ConfigurationResultRecord configuration)

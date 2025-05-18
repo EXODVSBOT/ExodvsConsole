@@ -15,6 +15,7 @@ namespace Domain.Record
         int BuyRsi,
         int SellRsi,
         int StopLoss,
-        int TakeProfit
+        int TakeProfit,
+        int RunInterval
     );
 }

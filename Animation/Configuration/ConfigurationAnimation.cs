@@ -15,6 +15,7 @@ namespace Animation.Configuration
         public int StopLoss { get; private set; } = 10;
         public int TakeProfit { get; private set; } = 10;
         public int KlineInterval { get; private set; } = 9; // Padrão: 4 horas
+        public int RunInterval { get; private set; } = 1; //Padrão 1 segundo
 
         public ConfigurationResultRecord GetConfiguration()
         {
@@ -33,6 +34,8 @@ namespace Animation.Configuration
 
             KlineInterval = SelectKlineInterval();
 
+            RunInterval = SelectRunInterval();
+
             Thread.Sleep(1000);
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("\n✅ Parâmetros configurados com sucesso!");
@@ -49,8 +52,39 @@ namespace Animation.Configuration
                 BuyRsi,
                 SellRsi,
                 StopLoss,
-                TakeProfit
+                TakeProfit,
+                RunInterval
             );
+        }
+
+        private int SelectRunInterval()
+        {
+            Console.WriteLine("\nSelecione o intervalo para análise dos candles:");
+            Console.WriteLine("╔═══════╦═══════════════════════════════════╗");
+            Console.WriteLine("║ Opção ║         Intervalo de Análise      ║");
+            Console.WriteLine("╠═══════╬═══════════════════════════════════╣");
+            Console.WriteLine("║   1   ║ 1 análise por segundo             ║");
+            Console.WriteLine("║   2   ║ 1 análise a cada 5 segundos       ║");
+            Console.WriteLine("║   3   ║ 1 análise a cada 10 segundos      ║");
+            Console.WriteLine("║   4   ║ 1 análise a cada 30 segundos      ║");
+            Console.WriteLine("║   5   ║ 1 análise a cada minuto           ║");
+            Console.WriteLine("║   6   ║ 1 análise a cada 10 minutos       ║");
+            Console.WriteLine("║   7   ║ 1 análise a cada hora             ║");
+            Console.WriteLine("╚═══════╩═══════════════════════════════════╝");
+
+            while (true)
+            {
+                Console.Write("\nDigite o NÚMERO da opção desejada (1-7, padrão: 1): ");
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                    return 1; // Valor padrão se nada for digitado
+
+                if (int.TryParse(input, out int result) && result >= 1 && result <= 7)
+                    return result;
+
+                Console.WriteLine("Opção inválida! Por favor, digite um número entre 1 e 7.");
+            }
         }
 
         private int SelectKlineInterval()

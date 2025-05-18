@@ -249,7 +249,7 @@ namespace Animation.Monitoring
             Console.ForegroundColor = _colorScheme[3];
             Console.WriteLine("PREÇO DO BITCOIN:");
             Console.ForegroundColor = _colorScheme[4];
-            Console.WriteLine($"Preço mínimo: {_resultsHistory.Min(r => r.BitcoinPrice):C}");
+            Console.WriteLine($"Preço mínimo: {_resultsHistory.Where(r => r.BitcoinPrice > 0).Min(r => r.BitcoinPrice):C}");
             Console.WriteLine($"Preço máximo: {_resultsHistory.Max(r => r.BitcoinPrice):C}");
             Console.WriteLine($"Preço médio: {_resultsHistory.Average(r => r.BitcoinPrice):C}");
 

@@ -27,12 +27,15 @@ namespace Aplication.InternalServices
             if (!_conditions.isAbleToStart) 
             {
                 Console.Clear();
-                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Red;
 
                 foreach (var item in _conditions.errors)
                 {
                     Console.WriteLine(item);
                 }
+
+                await Task.Delay(TimeSpan.FromSeconds(5));
+                Console.Clear();
             }
         }
 
