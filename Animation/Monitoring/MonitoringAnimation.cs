@@ -103,6 +103,7 @@ namespace Animation.Monitoring
                 ($"Saldo USDT: ", $"{_lastResult.UsdtBalance:F2}"),
                 ($"Última Operação: ", $"{_lastResult.OperationDate:HH:mm:ss}"),
                 ($"Intervalo Kline: ", GetKlineIntervalDescription(_lastResult.KlineInterval)),
+                ($"Valocidade Análise: ", GetRunIntervalDescription(_lastResult.RunInterval)),
                 ($"Histórico: ", $"{_resultsHistory.Count}/{MaxHistorySize}")
             });
 
@@ -131,6 +132,21 @@ namespace Animation.Monitoring
             Console.Write(new string('═', Console.WindowWidth));
             Console.WriteLine($" Ciclo atualizado em: {DateTime.Now:HH:mm:ss} ".PadBoth(Console.WindowWidth));
             Console.Write(new string('═', Console.WindowWidth));
+        }
+
+        private string GetRunIntervalDescription(int runInterval)
+        {
+            return runInterval switch
+            {
+                1 => "Por segundo",
+                2 => "A cada 5 segundos",
+                3 => "A cada 10 segundos",
+                4 => "A cada 30 segundos",
+                5 => "A cada minuto",
+                6 => "A cada 10 minutos",
+                7 => "A cada hora",
+                _ => "por segundo (padrão)" 
+            };
         }
 
         private void UpdateColumn(int columnIndex, int startLine, (string Label, string Value)[] items)

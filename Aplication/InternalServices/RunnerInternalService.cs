@@ -155,7 +155,8 @@ namespace Aplication.InternalServices
                 TakeProfit = configuration.TakeProfit,
                 OperationDate = DateTime.Now,
                 UsdtBalance = usdtBalance,
-                KlineInterval = configuration.klineInterval
+                KlineInterval = configuration.klineInterval,
+                RunInterval = configuration.RunInterval
             };
 
         private async Task SaveData(bool executed, OperationResultDomain operationResult, ConfigurationResultRecord configuration, DecisionEnum decision, decimal usdtBalance)

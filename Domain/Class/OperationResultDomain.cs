@@ -21,5 +21,6 @@ namespace Domain.Class
         public int SellRsi { get; set; }
         public int TakeProfit { get; set; }
         public int StopLoss { get; set; }
+        public int RunInterval { get; set; }
     }
 }
