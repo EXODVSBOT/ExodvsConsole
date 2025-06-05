@@ -43,7 +43,7 @@ namespace Animation.Configuration
             Console.ResetColor();
             Console.Clear();
 
-            return new ConfigurationResultRecord(
+            var config = new ConfigurationResultRecord(
                 BinanceKey,
                 BinanceSecret,
                 TelegramKey,
@@ -55,6 +55,22 @@ namespace Animation.Configuration
                 TakeProfit,
                 RunInterval
             );
+            
+            SaveConfiguration(config);
+            
+            return config; 
+        }
+
+        public void SaveConfiguration(ConfigurationResultRecord configuration)
+        {
+            
+        }
+        
+        //implementar método que busca a ultima configuração salva em arquivo
+        //quando o usuário não configura nenhum parâmetro (rodando em segundo plano com &)
+        public ConfigurationResultRecord GetConfigurationFromFile()
+        {
+            throw new NotImplementedException();
         }
 
         private int SelectRunInterval()

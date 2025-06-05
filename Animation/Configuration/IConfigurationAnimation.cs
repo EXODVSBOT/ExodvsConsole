@@ -10,5 +10,6 @@ namespace Animation.Configuration
     public interface IConfigurationAnimation
     {
         ConfigurationResultRecord GetConfiguration();
+        ConfigurationResultRecord GetConfigurationFromFile();
     }
 }

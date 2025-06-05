@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 
 namespace TxtDatabase
 {
     public class OperationRepository<T> : IOperationRepository<T> where T : class
     {
-        private const string FilePath = @"C:\Exodvs\TxtDatabase.txt";
+        private readonly string FilePath;
         private readonly JsonSerializerOptions _jsonOptions;
 
         public OperationRepository()
@@ -19,7 +20,22 @@ namespace TxtDatabase
                 PropertyNameCaseInsensitive = true
             };
 
+            // Determina o caminho do arquivo baseado no sistema operacional
+            FilePath = GetDatabaseFilePath();
             EnsureFileExists();
+        }
+
+        private string GetDatabaseFilePath()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return @"C:\Exodvs\TxtDatabase.txt";
+            }
+            else
+            {
+                string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                return Path.Combine(homeDirectory, "ExodvsBot", "TxtDatabase.txt");
+            }
         }
 
         public void EnsureFileExists()
