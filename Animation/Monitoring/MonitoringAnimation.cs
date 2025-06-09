@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Data;
 using Domain.Class;
 using Domain.Enum;
-using TxtDatabase;
 
 namespace Animation.Monitoring
 {
@@ -27,9 +27,9 @@ namespace Animation.Monitoring
         private OperationResultDomain _lastResult;
         private readonly List<OperationResultDomain> _resultsHistory = new List<OperationResultDomain>();
         private int MaxHistorySize = 100000;
-        private readonly IOperationRepository<OperationResultDomain> _operation;
+        private readonly IOperationResultRepository _operation;
 
-        public MonitoringAnimation(IOperationRepository<OperationResultDomain> operation)
+        public MonitoringAnimation(IOperationResultRepository operation)
         {
             _operation = operation;
         }

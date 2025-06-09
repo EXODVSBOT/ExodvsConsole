@@ -17,7 +17,7 @@ namespace Animation.Configuration
         public int KlineInterval { get; private set; } = 9; // Padrão: 4 horas
         public int RunInterval { get; private set; } = 1; //Padrão 1 segundo
 
-        public ConfigurationResultRecord GetConfiguration()
+        public ConfigurationRecord GetConfiguration()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
 
@@ -43,7 +43,7 @@ namespace Animation.Configuration
             Console.ResetColor();
             Console.Clear();
 
-            var config = new ConfigurationResultRecord(
+            var config = new ConfigurationRecord(
                 BinanceKey,
                 BinanceSecret,
                 TelegramKey,
@@ -61,14 +61,14 @@ namespace Animation.Configuration
             return config; 
         }
 
-        public void SaveConfiguration(ConfigurationResultRecord configuration)
+        public void SaveConfiguration(ConfigurationRecord configuration)
         {
             
         }
         
         //implementar método que busca a ultima configuração salva em arquivo
         //quando o usuário não configura nenhum parâmetro (rodando em segundo plano com &)
-        public ConfigurationResultRecord GetConfigurationFromFile()
+        public ConfigurationRecord GetConfigurationFromFile()
         {
             throw new NotImplementedException();
         }

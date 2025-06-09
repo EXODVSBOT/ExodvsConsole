@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Record
 {
-    public record struct ConfigurationResultRecord(
+    public record ConfigurationRecord(
         string BinanceKey,
         string BinanceSecret,
         string TelegramKey,

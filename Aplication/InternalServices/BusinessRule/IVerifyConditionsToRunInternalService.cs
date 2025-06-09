@@ -9,6 +9,6 @@ namespace Aplication.InternalServices
 {
     public interface IVerifyConditionsToRunInternalService
     {
-        Task<ConditionsToRunRecord> StartVerification(ConfigurationResultRecord configuration);
+        Task<ConditionsToRunRecord> StartVerification(ConfigurationRecord configuration);
     }
 }

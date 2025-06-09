@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Data;
 using Domain.Class;
 using Domain.Enum;
 using Domain.Record;
-using TxtDatabase;
 
 namespace Aplication.InternalServices
 {
     public class DecisionInternalService : IDecisionInternalService
     {
-        private readonly IOperationRepository<OperationResultDomain> _operation;
+        private readonly IOperationResultRepository _operation;
 
-        public DecisionInternalService(IOperationRepository<OperationResultDomain> operation)
+        public DecisionInternalService(IOperationResultRepository operation)
         {
             _operation = operation ?? throw new ArgumentNullException(nameof(operation));
         }
 
         public async Task<DecisionEnum> AnalyzeMarket(
             decimal marketRsi,
-            ConfigurationResultRecord config,
+            ConfigurationRecord config,
             decimal bitcoinPrice)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));

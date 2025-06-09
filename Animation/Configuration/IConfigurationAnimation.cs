@@ -9,7 +9,7 @@ namespace Animation.Configuration
 {
     public interface IConfigurationAnimation
     {
-        ConfigurationResultRecord GetConfiguration();
-        ConfigurationResultRecord GetConfigurationFromFile();
+        ConfigurationRecord GetConfiguration();
+        ConfigurationRecord GetConfigurationFromFile();
     }
 }

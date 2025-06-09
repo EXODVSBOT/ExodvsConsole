@@ -12,7 +12,7 @@ namespace Aplication.InternalServices
     {
         Task<DecisionEnum> AnalyzeMarket(
            decimal marketRsi,
-           ConfigurationResultRecord config,
+           ConfigurationRecord config,
            decimal bitcoinPrice);
     }
 }

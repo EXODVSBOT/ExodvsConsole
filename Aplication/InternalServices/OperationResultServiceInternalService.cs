@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data;
 using Domain.Class;
 using Domain.Record;
-using TxtDatabase;
 
 namespace Aplication.InternalServices
 {
     public class OperationResultServiceInternalService : IOperationResultInternalService
     {
-        private readonly IOperationRepository<OperationResultDomain> _operation;
+        private readonly IOperationResultRepository _operation;
 
-        public OperationResultServiceInternalService(IOperationRepository<OperationResultDomain> operation)
+        public OperationResultServiceInternalService(IOperationResultRepository operation)
         {
             _operation = operation;
         }

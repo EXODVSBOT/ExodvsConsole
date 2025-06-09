@@ -12,7 +12,7 @@ namespace Aplication.InternalServices
     {
         private ConditionsToRunRecord _conditions;
         
-        public async Task<ConditionsToRunRecord> StartVerification(ConfigurationResultRecord configuration)
+        public async Task<ConditionsToRunRecord> StartVerification(ConfigurationRecord configuration)
         {
             _conditions.isAbleToStart = true;
             _conditions.errors = new List<string>();
@@ -69,7 +69,7 @@ namespace Aplication.InternalServices
             return _conditions;
         }
 
-        public async Task<ConditionsToRunRecord> VerifyBinanceKeys(ConfigurationResultRecord configuration)
+        public async Task<ConditionsToRunRecord> VerifyBinanceKeys(ConfigurationRecord configuration)
         {
            var binanceInfo = new BinanceInfoExternalService(configuration.BinanceKey, configuration.BinanceSecret);
 
